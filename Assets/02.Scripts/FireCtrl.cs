@@ -11,6 +11,8 @@ public class FireCtrl : MonoBehaviour
 
     private new AudioSource audio;
     private MeshRenderer muzzleFlash;
+    private RaycastHit hit;
+
 
     void Start()
     {
@@ -25,6 +27,12 @@ public class FireCtrl : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
+
+            if (Physics.Raycast(firePos.position, firePos.forward, out hit, 10.0f, 1 << 6)) 
+            {
+                Debug.Log($"Hit={hit.transform.name}");
+                hit.transform.GetComponent<MonsterCtrl>()?.OnDamage(hit.point, hit.normal); 
+            }
         }
     }
 

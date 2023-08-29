@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.AI;
 
 public class MonsterCtrl : MonoBehaviour
@@ -135,19 +134,21 @@ public class MonsterCtrl : MonoBehaviour
         if (coll.collider.CompareTag("BULLET"))
         {
             Destroy(coll.gameObject);
-            anim.SetTrigger(hashHit);
+        }
+    }
 
-            Vector3 pos = coll.GetContact(0).point;
-            Quaternion rot = Quaternion.LookRotation(-coll.GetContact(0).normal);
-            ShowBloodEffect(pos, rot);
+    public void OnDamage(Vector3 pos, Vector3 normal)
+    {
+        anim.SetTrigger(hashHit);
+        Quaternion rot = Quaternion.LookRotation(normal);
 
-            hp -= 10;
+        ShowBloodEffect(pos, rot);
 
-            if (hp <= 0)
-            {
-                state = State.DIE;
-                GameManager.instance.DisplayScore(50);
-            }
+        hp -= 30;
+        if (hp <= 0)
+        {
+            state = State.DIE;
+            GameManager.instance.DisplayScore(50);
         }
     }
 
